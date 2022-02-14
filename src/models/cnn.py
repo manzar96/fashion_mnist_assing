@@ -6,8 +6,8 @@ class CNN(nn.Module):
     super().__init__()
 
     # define layers
-    self.conv1 = nn.Conv2d(in_channels=1, out_channels=12, kernel_size=4)
-    self.conv2 = nn.Conv2d(in_channels=12, out_channels=32, kernel_size=4)
+    self.conv1 = nn.Conv2d(in_channels=1, out_channels=12, kernel_size=3)
+    self.conv2 = nn.Conv2d(in_channels=12, out_channels=32, kernel_size=3)
 
     self.fc1 = nn.Linear(in_features=32*4*4, out_features=120)
     self.fc2 = nn.Linear(in_features=120, out_features=60)
