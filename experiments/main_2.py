@@ -40,7 +40,7 @@ metrics = MetricsWraper(['accuracy'])
 trainer = ClassificationTrainer(model=model, optimizer=optimizer,
                                 config=config, metrics=metrics)
 
-trainer.kfoldvalidation(k_folds=2, epochs=2, dataset=dataset_train,
+trainer.kfoldvalidation(k_folds=5, epochs=10, dataset=dataset_train,
                         collator_fn=collator_fn,
                         batch_size=config.batch_size)
 
