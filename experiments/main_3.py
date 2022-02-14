@@ -24,7 +24,7 @@ config = Config(args=args,device=DEVICE)
 dataset_train = CXR(path='./data/CXR', train=True, transform=True)
 dataset_train.normalize()
 
-collator_fn = CXRXCeptionCollator()
+collator_fn = CXRXCeptionCollator(device=DEVICE)
 
 # make model
 # model = MLP(input_dim=28*28, out_dim=10)

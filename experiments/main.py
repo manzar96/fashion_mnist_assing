@@ -24,14 +24,14 @@ config = Config(args=args,device=DEVICE)
 # load dataset
 dataset_train = FashionMnist(path='./data/FashionMNIST', train=True, transform=True)
 dataset_train.normalize()
-collator_fn = FashionMnistCollator()
+collator_fn = FashionMnistCollator(device=DEVICE)
 train_loader = DataLoader(dataset_train, batch_size=config.batch_size,
                           drop_last=False, shuffle=False,
                           collate_fn=collator_fn)
 
 dataset_test = FashionMnist(path='./data/FashionMNIST', train=False, transform=True)
 dataset_test.normalize()
-collator_fn = FashionMnistCollator()
+collator_fn = FashionMnistCollator(device=DEVICE)
 test_loader = DataLoader(dataset_test, batch_size=config.batch_size,
                           drop_last=False, shuffle=False,
                           collate_fn=collator_fn)

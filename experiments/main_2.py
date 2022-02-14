@@ -24,7 +24,7 @@ config = Config(args=args,device=DEVICE)
 dataset_train = FashionMnist(path='./data/FashionMNIST', train=True, transform=True)
 dataset_train.normalize()
 
-collator_fn = FashionMnistCNNCollator()
+collator_fn = FashionMnistCNNCollator(device=DEVICE)
 
 
 # make model
