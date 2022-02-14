@@ -37,7 +37,7 @@ test_loader = DataLoader(dataset_test, batch_size=config.batch_size,
                           collate_fn=collator_fn)
 
 # make model
-# model = MLP(input_dim=28*28, out_dim=10)
+model = MLP(input_dim=28*28, out_dim=10)
 # model = CNN()
 
 optimizer = Adam(model.parameters(), lr=config.lr , eps=1e-07)
