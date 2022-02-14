@@ -37,6 +37,7 @@ class BaseTrainer:
         self._steps = 0
         self._train_logs = 0
         self._val_logs = 0
+        self.kfold = None
 
 
     def print_epoch(self, epoch, avg_train_epoch_loss,
@@ -226,7 +227,7 @@ class BaseTrainer:
                                                            fold][key] for fold
                                                        in range(
                     k_folds)]) / k_folds)
-
+        self.kfold=None
 
 class ClassificationTrainer(BaseTrainer):
 
