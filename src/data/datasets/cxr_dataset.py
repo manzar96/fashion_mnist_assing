@@ -20,8 +20,8 @@ class CXR(Dataset):
         self.data, self.targets = self.read_data(path)
 
     def read_data(self,path):
-        neg_dir = os.path.join(path,'G_NC/G1/')
-        pos_dir = os.path.join(path,'G_PC/G2/')
+        neg_dir = os.path.join(path,'G1/')
+        pos_dir = os.path.join(path,'G2/')
         neg_files = os.listdir(neg_dir)
         pos_files = os.listdir(pos_dir)
         data = []
