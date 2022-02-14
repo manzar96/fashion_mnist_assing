@@ -10,7 +10,6 @@ class Config:
             self.checkpoint_dir = './checkpoints/draft/'
         self.logdir = 'events/'+ "".join(self.checkpoint_dir.split(
             "checkpoints/")[1:])
-        print(self.logdir)
         if args.loadckpt is not None:
             self.loadckpt = args.loadckpt
         else:
