@@ -23,12 +23,13 @@ config = Config(args=args,device=DEVICE)
 # load dataset
 dataset_train = CXR(path='./data/CXR', train=True, transform=True)
 dataset_train.normalize()
-
 collator_fn = CXRXCeptionCollator(device=DEVICE)
 
 # make model
 # model = MLP(input_dim=28*28, out_dim=10)
 # model = CNN()
+# we load the pretrained XCeption Model and we add a classification head for
+# binary classification
 model = timm.create_model('xception', pretrained=True, num_classes=2)
 
 
@@ -44,8 +45,3 @@ trainer = ClassificationTrainer(model=model, optimizer=optimizer,
 trainer.kfoldvalidation(k_folds=5, epochs=config.epochs, dataset=dataset_train,
                         collator_fn=collator_fn,
                         batch_size=config.batch_size)
-
-
-
-
-

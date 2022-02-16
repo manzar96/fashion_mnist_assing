@@ -21,9 +21,11 @@ args = parse_args()
 config = Config(args=args,device=DEVICE)
 
 # load dataset
-dataset_train = FashionMnist(path='./data/FashionMNIST', train=True, transform=True)
+dataset_train = FashionMnist(path='./data/FashionMNIST', train=True)
 dataset_train.normalize()
-
+dataset_test = FashionMnist(path='./data/FashionMNIST', train=False)
+dataset_test.normalize()
+dataset = torch.utils.data.ConcatDataset([dataset_train, dataset_test])
 collator_fn = FashionMnistCNNCollator(device=DEVICE)
 
 
@@ -40,7 +42,7 @@ metrics = MetricsWraper(['accuracy'])
 trainer = ClassificationTrainer(model=model, optimizer=optimizer,
                                 config=config, metrics=metrics)
 
-trainer.kfoldvalidation(k_folds=5, epochs=config.epochs, dataset=dataset_train,
+trainer.kfoldvalidation(k_folds=5, epochs=config.epochs, dataset=dataset,
                         collator_fn=collator_fn,
                         batch_size=config.batch_size)
 

@@ -14,24 +14,41 @@ from src.utils.functions import reset_weights
 
 
 class BaseTrainer:
-
+    """
+    Base Trainer class used for training and validation. Should be wrapped
+    by another class.
+    """
     def __init__(self, model,
                  optimizer,
                  config,
                  metrics=None,
                  scheduler=None):
+        """
 
+        :param model: the model to be trained
+        :param optimizer: optimizer used
+        :param config: config file
+        :param metrics: metrics to be reported
+        :param scheduler: scheduler to be used (if applied)
+        """
         self.model = model.to(config.device)
         self.optimizer = optimizer
         self.scheduler = scheduler
+        # the directory to save the model
         self.checkpoint_dir = config.checkpoint_dir
+        # 'clip' is used for gradient clipping (if applied)
         self.clip = config.clip
         self.device = config.device
+        # whether to skip validation process
         self.skip_val = config.skip_val
+        # patience for early stopping
         self.patience = config.patience
+        # wheter to apply early stopping or not
         self.early_stopping = config.early_stopping
+        # dir to save logs for tensorboard
         self.logdir = config.logdir
         self.writer = SummaryWriter(self.logdir)
+        # specified metrics to be reported
         self.metrics = metrics
         #  used for logging
         self._steps = 0
@@ -97,12 +114,12 @@ class BaseTrainer:
             return accum_loss,accum_losses
 
     @torch.no_grad()
-    def _compute_validation_loss(self, val_loader):
+    def _compute_validation_loss(self):
         """Compute validation loss."""
         self.model.eval()
         loss = 0
         print_loss = defaultdict(int)
-        for batch in tqdm(val_loader):
+        for batch in tqdm(self.val_loader):
             scores,loss_val, loss_dict = self._compute_loss(batch,
                                                        return_scores=True)
             loss += loss_val.item()
@@ -112,9 +129,9 @@ class BaseTrainer:
                 self.metrics._compute_metrics_batched(scores,batch[1],
                                                       type='val')
 
-        loss /= len(val_loader)
+        loss /= len(self.val_loader)
         for key in print_loss:
-            print_loss[key] /= len(val_loader)
+            print_loss[key] /= len(self.val_loader)
         self.model.train()
         return loss, print_loss
 
@@ -149,9 +166,8 @@ class BaseTrainer:
                                         self._train_logs)
                 self._train_logs += 1
 
-        if not self.skip_val:
-            val_loss, val_losses = self._compute_validation_loss(
-                self.val_loader)
+        if not self.skip_val and self.val_loader is not None:
+            val_loss, val_losses = self._compute_validation_loss()
             self.writer.add_scalars('Val Loss', val_losses, self._val_logs)
             self._val_logs += 1
 
@@ -168,7 +184,7 @@ class BaseTrainer:
 
                 if self.cur_patience == self.patience:
                     keep_training = False
-        if not self.skip_val:
+        if not self.skip_val and self.val_loader is not None:
             self.print_epoch(epoch,
                              losses["Total"]/len(self.train_loader),
                              strt,
@@ -213,6 +229,14 @@ class BaseTrainer:
 
     def kfoldvalidation(self, k_folds, epochs, dataset, batch_size,
                         collator_fn):
+        """
+        This function is used for kfoldvalidation
+        :param k_folds: number of folds
+        :param epochs: number of epochs to be executed for each fold
+        :param dataset: dataset to be splitted into folds
+        :param batch_size: batch size for each iteration
+        :param collator_fn: collator function used for dataloader
+        """
         kfold = KFold(n_splits=k_folds, shuffle=True)
         self.kfold=True
         self.kfold_results={}
@@ -228,6 +252,35 @@ class BaseTrainer:
                                                        in range(
                     k_folds)]) / k_folds)
         self.kfold=None
+
+    def test(self, testloader,loadckpt=None):
+        """Used for evaluating the model"""
+        if loadckpt:
+        #     load model from checkpoint...
+            pass
+        self.model.eval()
+        self.metrics.reset()
+        loss = 0
+        print_loss = defaultdict(int)
+        for batch in tqdm(testloader):
+            scores, loss_val, loss_dict = self._compute_loss(batch,
+                                                             return_scores=True)
+            loss += loss_val.item()
+            for key, val in loss_dict.items():
+                print_loss[key] += val.sum().item()
+            if self.metrics is not None:
+                self.metrics._compute_metrics_batched(scores, batch[1],
+                                                      type='val')
+
+        loss /= len(testloader)
+        for key in print_loss:
+            print_loss[key] /= len(testloader)
+
+        if self.metrics:
+            metricts_dict = self.metrics.get_metrics(type='val')
+            for key in metricts_dict:
+                print("{}: {} ".format(key,metricts_dict[key]))
+
 
 class ClassificationTrainer(BaseTrainer):
 
@@ -254,3 +307,4 @@ class ClassificationTrainer(BaseTrainer):
             return outputs, loss, losses
         else:
             return loss, losses
+

@@ -3,19 +3,23 @@ import torch
 import torchvision
 import matplotlib.pyplot as plt
 
+from PIL import Image
+
 from torch.utils.data import Dataset
 
 
 class FashionMnist(Dataset):
-
-    def __init__(self, path, train=False, transform=True):
+    """
+    FashionMnist Dataset Wraper. Used for loading fashion-mnist data.
+    """
+    def __init__(self, path, train=False, transforms=None):
         self.path = path
-        if transform:
-            self.transforms = torchvision.transforms.Compose(
-                torchvision.transforms.ToTensor())
-        else:
-            self.transforms = None
-
+        # if transform:
+        #     self.transforms = torchvision.transforms.Compose(
+        #         torchvision.transforms.ToTensor())
+        # else:
+        #     self.transforms = None
+        self.transforms = transforms
         if os.path.exists(path):
             download = False
         else:
@@ -25,14 +29,12 @@ class FashionMnist(Dataset):
             set = torchvision.datasets.FashionMNIST(
                 root=self.path,
                 download=download,
-                train=True,
-            transform=self.transforms)
+                train=True)
         else:
             set = torchvision.datasets.FashionMNIST(
                 root=self.path,
                 download=download,
-                train=False,
-                transform=self.transforms)
+                train=False)
 
         self.data = set.data
         self.classes = set.classes
@@ -45,12 +47,28 @@ class FashionMnist(Dataset):
         return len(self.data)
 
     def __getitem__(self, index):
-        return self.data[index], self.targets[index]
+        data = self.data[index]
+        target = self.targets[index]
+        if self.transforms:
+        #     to be consistent we transform tensor to numpy and then to PIL
+        #     image
+            data = Image.fromarray(data.numpy(), mode="L")
+            data = self.transforms(data)
+        return data, target
 
     def normalize(self):
+        """
+        Func to normzalize the grayscale images of fasahion-mnist dataset
+        :return: data normalized
+        """
         self.data = self.data / 255.0
 
     def visualize(self,indexes_list):
+        """
+        Func to visualize specific images of the dataset
+        :param indexes_list: a list containing the indexes of images that
+        you want to visualize
+        """
         plt.figure(figsize=(10, 10))
         for index,im in enumerate(indexes_list):
             plt.subplot(5, 5, index + 1)

@@ -22,19 +22,22 @@ args = parse_args()
 config = Config(args=args,device=DEVICE)
 
 # load dataset
-dataset_train = FashionMnist(path='./data/FashionMNIST', train=True, transform=True)
+dataset_train = FashionMnist(path='./data/FashionMNIST', train=True)
 dataset_train.normalize()
 collator_fn = FashionMnistCollator(device=DEVICE)
 train_loader = DataLoader(dataset_train, batch_size=config.batch_size,
                           drop_last=False, shuffle=False,
                           collate_fn=collator_fn)
 
-dataset_test = FashionMnist(path='./data/FashionMNIST', train=False, transform=True)
+dataset_test = FashionMnist(path='./data/FashionMNIST', train=False)
 dataset_test.normalize()
 collator_fn = FashionMnistCollator(device=DEVICE)
 test_loader = DataLoader(dataset_test, batch_size=config.batch_size,
                           drop_last=False, shuffle=False,
                           collate_fn=collator_fn)
+
+# used to visualize samples
+# dataset_train.visualize([10,20,32,12,24,544,100,6,11,2343])
 
 # make model
 model = MLP(input_dim=28*28, out_dim=10)
@@ -49,8 +52,9 @@ metrics = MetricsWraper(['accuracy'])
 trainer = ClassificationTrainer(model=model, optimizer=optimizer,
                                 config=config, metrics=metrics)
 
-trainer.fit(config.epochs, train_loader, val_loader=test_loader)
+trainer.fit(config.epochs, train_loader, val_loader=None)
 
+trainer.test(testloader=test_loader,loadckpt=None)
 
 
 

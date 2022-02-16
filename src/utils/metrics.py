@@ -4,8 +4,14 @@ from sklearn.metrics import accuracy_score, f1_score, recall_score
 
 
 class MetricsWraper:
-
+    """
+    Class that implements metrics used in BaseTrainer classs.
+    """
     def __init__(self, metrics):
+        """
+        :param metrics: the metrics that you want to be calculated during
+        training or validation
+        """
         self.avail_metrics = ['accuracy',
          'f1-micro',
          'f1-macro', 'recall-micro',
@@ -43,6 +49,10 @@ class MetricsWraper:
                 self.val_targets.append(targets.tolist())
 
     def get_metrics(self, type='train'):
+        """
+        :param type: type of metrics to be reported ('train' or 'val')
+        :return: returns a dict containing the specified metrics
+        """
         if type == 'train':
             preds = self.train_preds
             targets = self.train_targets
