@@ -21,7 +21,7 @@ args = parse_args()
 config = Config(args=args,device=DEVICE)
 
 # load dataset
-dataset = CXR(path='./data/CXR',transform=None)
+dataset = CXR(path='./data/CXR',transforms=None)
 collator_fn = CXRXCeptionCollator(device=DEVICE)
 # make model
 # we load the pretrained XCeption Model and we add a classification head for
