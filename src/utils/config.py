@@ -14,6 +14,10 @@ class Config:
             self.loadckpt = args.loadckpt
         else:
             self.loadckpt = None
+        if args.loadckpt is not None:
+            self.kfold_dir = args.kfold_dir
+        else:
+            self.kfold_dir = None
         self.clip = args.clip
         self.skip_val = args.skip_validation
         self.patience = args.patience
