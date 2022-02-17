@@ -12,13 +12,9 @@ class CXR(Dataset):
     """
     This class wraps the CXR Dataset.
     """
-    def __init__(self, path, transform=True):
+    def __init__(self, path, transforms=None):
         self.path = path
-        if transform:
-            self.transforms = torchvision.transforms.PILToTensor()
-        else:
-            self.transforms = None
-
+        self.transforms = transforms
         self.data, self.targets = self.read_data(path)
 
     def read_data(self,path):
@@ -48,7 +44,13 @@ class CXR(Dataset):
         return len(self.data)
 
     def __getitem__(self, index):
-        return self.data[index], self.targets[index]
+        data = self.data[index]
+        if self.transforms:
+        #     to be consistent we transform tensor to numpy and then to PIL
+        #     image
+            data = Image.fromarray(data.numpy(), mode="L")
+            data = self.transforms(data)
+        return data, self.targets[index]
 
     def normalize(self):
         self.data = self.data / 255.0
