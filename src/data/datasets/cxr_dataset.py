@@ -30,15 +30,12 @@ class CXR(Dataset):
                 img = self.transforms(img)
             data.append(img)
             targets.append(torch.tensor(0,dtype=torch.long))
-        import ipdb;ipdb.set_trace()
         for file in pos_files:
             img = Image.open(os.path.join(pos_dir,file)).convert("RGB")
             if self.transforms:
                 img=self.transforms(img)
             data.append(img)
             targets.append(torch.tensor(1,dtype=torch.long))
-        import ipdb;ipdb.set_trace()
-
         data=torch.stack(data)
         targets = torch.stack(targets)
         return data, targets
