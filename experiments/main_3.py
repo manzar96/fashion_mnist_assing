@@ -21,16 +21,9 @@ args = parse_args()
 config = Config(args=args,device=DEVICE)
 
 # load dataset
-dataset_train = CXR(path='./data/CXR', train=True)
-dataset_train.normalize()
-dataset_test = CXR(path='./data/CXR', train=False)
-dataset_test.normalize()
-import ipdb;ipdb.set_trace()
-dataset = torch.utils.data.ConcatDataset([dataset_train, dataset_test])
+dataset = CXR(path='./data/CXR',transform=None)
 collator_fn = CXRXCeptionCollator(device=DEVICE)
 # make model
-# model = MLP(input_dim=28*28, out_dim=10)
-# model = CNN()
 # we load the pretrained XCeption Model and we add a classification head for
 # binary classification
 model = timm.create_model('xception', pretrained=True, num_classes=2)

@@ -12,7 +12,7 @@ class CXR(Dataset):
     """
     This class wraps the CXR Dataset.
     """
-    def __init__(self, path, train=False, transform=True):
+    def __init__(self, path, transform=True):
         self.path = path
         if transform:
             self.transforms = torchvision.transforms.PILToTensor()
@@ -33,12 +33,15 @@ class CXR(Dataset):
             img = self.transforms(img)
             data.append(img)
             targets.append(torch.tensor(0,dtype=torch.long))
+        import ipdb;ipdb.set_trace()
         for file in pos_files:
             img = Image.open(os.path.join(pos_dir,file)).convert('RGB')
             data.append(self.transforms(img))
             targets.append(torch.tensor(1,dtype=torch.long))
         data=torch.stack(data)
         targets = torch.stack(targets)
+        import ipdb;
+        ipdb.set_trace()
         return data, targets
 
     def __len__(self):
