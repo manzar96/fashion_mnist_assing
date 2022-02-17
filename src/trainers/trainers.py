@@ -198,7 +198,7 @@ class BaseTrainer:
 
     def fit(self, epochs, train_loader, val_loader=None):
         self.cur_patience = 0
-        self.best_val_loss = 10000.0
+        self.best_val_loss = 100000000.0
         self.train_loader = train_loader
         self.val_loader = val_loader
 
