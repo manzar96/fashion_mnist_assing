@@ -24,33 +24,28 @@ class CXR(Dataset):
         pos_files = os.listdir(pos_dir)
         data = []
         targets = []
-        for file in neg_files:
-            img = Image.open(os.path.join(neg_dir,file)).convert('RGB')
-            img = self.transforms(img)
+        for file in neg_files[:10]:
+            img = Image.open(os.path.join(neg_dir, file)).convert("RGB")
+            if self.transforms:
+                img = self.transforms(img)
             data.append(img)
             targets.append(torch.tensor(0,dtype=torch.long))
         import ipdb;ipdb.set_trace()
-        for file in pos_files:
-            img = Image.open(os.path.join(pos_dir,file)).convert('RGB')
-            data.append(self.transforms(img))
+        for file in pos_files[:10]:
+            img = Image.open(os.path.join(pos_dir,file)).convert("RGB")
+            if self.transforms:
+                img=self.transforms(img)
+            data.append(img)
             targets.append(torch.tensor(1,dtype=torch.long))
         data=torch.stack(data)
         targets = torch.stack(targets)
-        import ipdb;
-        ipdb.set_trace()
         return data, targets
 
     def __len__(self):
         return len(self.data)
 
     def __getitem__(self, index):
-        data = self.data[index]
-        if self.transforms:
-        #     to be consistent we transform tensor to numpy and then to PIL
-        #     image
-            data = Image.fromarray(data.numpy(), mode="L")
-            data = self.transforms(data)
-        return data, self.targets[index]
+        return self.data[index], self.targets[index]
 
     def normalize(self):
         self.data = self.data / 255.0

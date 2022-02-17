@@ -2,7 +2,7 @@ import torch
 import timm
 from torch.utils.data import DataLoader
 from torch.optim import Adam,SGD
-
+import torchvision
 from src.utils.parser import parse_args
 from src.utils.config import Config
 from src.data.datasets.cxr_dataset import CXR
@@ -10,7 +10,6 @@ from src.data.collators.cxrcollators import CXRXCeptionCollator
 from src.models.mlp import MLP
 from src.trainers.trainers import ClassificationTrainer
 from src.utils.metrics import MetricsWraper
-
 
 DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
 print(DEVICE)
@@ -21,7 +20,9 @@ args = parse_args()
 config = Config(args=args,device=DEVICE)
 
 # load dataset
-dataset = CXR(path='./data/CXR',transforms=None)
+transforms = torchvision.transforms.Compose([
+    torchvision.transforms.PILToTensor()])
+dataset = CXR(path='./data/CXR',transforms=transforms)
 collator_fn = CXRXCeptionCollator(device=DEVICE)
 # make model
 # we load the pretrained XCeption Model and we add a classification head for
