@@ -32,6 +32,11 @@ def parse_args():
         help="Checkpoint to load pretrained model",
     )
     parser.add_argument(
+        "--kfold_dir",
+        type=str,
+        help="Checkpoint to load pretrained model for kfold",
+    )
+    parser.add_argument(
         '--skip_validation', dest='skip_validation',
         help='Whether to skip validation',
          default=False,action='store_true'

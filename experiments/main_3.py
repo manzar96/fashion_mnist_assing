@@ -42,4 +42,5 @@ trainer = ClassificationTrainer(model=model, optimizer=optimizer,
 
 trainer.kfoldvalidation(k_folds=5, epochs=config.epochs, dataset=dataset,
                         collator_fn=collator_fn,
-                        batch_size=config.batch_size)
+                        batch_size=config.batch_size,
+                        pretr_dir=config.kfold_dir)

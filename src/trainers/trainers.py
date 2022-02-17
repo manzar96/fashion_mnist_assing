@@ -225,10 +225,14 @@ class BaseTrainer:
         self.fold=fold
         self.fit(epochs=epochs, train_loader=trainloader,
                  val_loader=testloader)
-        self.model.apply(reset_weights)
+        if self.pretrained:
+            state_dict = torch.load(self.pret_dir, map_location='cpu')
+            self.model.load_state_dict(state_dict)
+        else:
+            self.model.apply(reset_weights)
 
     def kfoldvalidation(self, k_folds, epochs, dataset, batch_size,
-                        collator_fn):
+                        collator_fn,pretr_dir=None):
         """
         This function is used for kfoldvalidation
         :param k_folds: number of folds
@@ -240,6 +244,16 @@ class BaseTrainer:
         kfold = KFold(n_splits=k_folds, shuffle=True)
         self.kfold=True
         self.kfold_results={}
+        if pretr_dir is None:
+            self.pretrained = False
+        else:
+            self.pretrained = True
+            self.pret_dir = pretr_dir
+        if self.pretrained:
+            torch.save(self.model.state_dict(), os.path.join(
+                self.pret_dir,
+                'model_checkpoint_pretrained.pth'))
+
         for fold, (train_ids, test_ids) in enumerate(kfold.split(dataset)):
             self.run_fold(fold,epochs,dataset, train_ids,test_ids,
                           batch_size, collator_fn)
@@ -252,6 +266,7 @@ class BaseTrainer:
                                                        in range(
                     k_folds)]) / k_folds)
         self.kfold=None
+        self.pretrained = False
 
     def test(self, testloader,loadckpt=None):
         """Used for evaluating the model"""
