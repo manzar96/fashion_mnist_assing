@@ -28,12 +28,12 @@ class CXR(Dataset):
         pos_files = os.listdir(pos_dir)
         data = []
         targets = []
-        for file in neg_files[:10]:
+        for file in neg_files:
             img = Image.open(os.path.join(neg_dir,file)).convert('RGB')
             img = self.transforms(img)
             data.append(img)
             targets.append(torch.tensor(0,dtype=torch.long))
-        for file in pos_files[:10]:
+        for file in pos_files:
             img = Image.open(os.path.join(pos_dir,file)).convert('RGB')
             data.append(self.transforms(img))
             targets.append(torch.tensor(1,dtype=torch.long))

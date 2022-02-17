@@ -7,7 +7,7 @@ from src.utils.config import Config
 from src.data.datasets.fashionmnist_dataset import FashionMnist
 from src.data.collators.fashionmnistcollator import FashionMnistCollator,FashionMnistCNNCollator
 from src.models.mlp import MLP
-from src.models.cnn import CNN
+from src.models.cnn import CNN,CNN2
 from src.trainers.trainers import ClassificationTrainer
 from src.utils.metrics import MetricsWraper
 

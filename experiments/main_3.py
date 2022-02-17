@@ -21,10 +21,13 @@ args = parse_args()
 config = Config(args=args,device=DEVICE)
 
 # load dataset
-dataset_train = CXR(path='./data/CXR', train=True, transform=True)
+dataset_train = CXR(path='./data/CXR', train=True)
 dataset_train.normalize()
+dataset_test = CXR(path='./data/CXR', train=False)
+dataset_test.normalize()
+import ipdb;ipdb.set_trace()
+dataset = torch.utils.data.ConcatDataset([dataset_train, dataset_test])
 collator_fn = CXRXCeptionCollator(device=DEVICE)
-
 # make model
 # model = MLP(input_dim=28*28, out_dim=10)
 # model = CNN()
