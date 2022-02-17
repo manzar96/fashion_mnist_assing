@@ -23,6 +23,7 @@ config = Config(args=args,device=DEVICE)
 transforms = torchvision.transforms.Compose([
     torchvision.transforms.PILToTensor()])
 dataset = CXR(path='./data/CXR',transforms=transforms)
+dataset.normalize()
 collator_fn = CXRXCeptionCollator(device=DEVICE)
 # make model
 # we load the pretrained XCeption Model and we add a classification head for
