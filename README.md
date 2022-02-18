@@ -4,7 +4,7 @@ On the first part of this project we train a CNN network that learns to
 predict one of the 10 classes of Fashion-Mnist dataset (a dataset 
 that contains grayscale images of 10 different classes of clothes).
 
-###Setup instructions:
+<h3>Setup instructions:</h3>
 1. Clone the github repo: 
 >git clone git@github.com:manzar96/fashion_mnist_assing.git
 
@@ -36,12 +36,12 @@ and install the default manually by running:
 
 > pip install torchvision
 
-###Project Structure-Training-Evaluation:
-####Structure:
+<h3>Project Structure-Training-Evaluation:</h3>
+<h4>Structure:</h4>
 The **experiments** folder contains the main python scripts for each task of 
 the assignment.
 The **src** folder contains all the classes used in the main scripts.  
-####Training:
+<h4>Training:</h4>
 You can run any of the python scripts contained on the **experiments** 
 folder or to create yours. For example, if you want to run the first task 
 of the assignment run:
@@ -59,7 +59,7 @@ We mention the most important ones (you can find the rest in utils/parser.py)
 - --not_use_early_stopping (disables early stopping during training)
 - --skip_val (skips validation process during training)
 
-###Part 1:
+<h3>Part 1:</h3>
 This task focuses on the implementation of several models in order to learn to 
 classify images illustrating clothes into the correct category.  More 
 specifically, at first we experiment with an MLP and a CNN network on the 
@@ -78,7 +78,7 @@ To reproduce our experiments run:
 -task1c ResNet training-evaluation:
 >python experiments/task1cresnet.py --lr 0.0001 
 
-###Part 2:
+<h3>Part 2:</h3>
 This task focuses on using the transfer learning technique on a 
 pneumonia detection task. More specifically, we obtain the XCeption model,
 a model pre-trained on the ImageNet dataset, and we fine-tune it on the
