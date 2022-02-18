@@ -49,5 +49,26 @@ class CXR(Dataset):
     def normalize(self):
         self.data = self.data / 255.0
 
+    def visualize(self,indexes_list):
+        """
+        Func to visualize specific images of the dataset
+        :param indexes_list: a list containing the indexes of images that
+        you want to visualize
+        """
+        trans_gray = torchvision.transforms.Grayscale(num_output_channels=1)
+        plt.figure(figsize=(10, 10))
+        for index,im in enumerate(indexes_list):
+            plt.subplot(5, 5, index + 1)
+            plt.xticks([])
+            plt.yticks([])
+            plt.grid(False)
+            plt.imshow(trans_gray(self.data[im]).squeeze(0), cmap=plt.cm.binary)
+            if self.targets[im].item()==0:
+                cls = "negative"
+            else:
+                cls = "positive"
+            plt.xlabel(cls)
+        plt.show()
+
 
 
