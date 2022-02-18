@@ -60,4 +60,33 @@ We mention the most important ones (you can find the rest in utils/parser.py)
 - --skip_val (skips validation process during training)
 
 ###Part 1:
- The first part of 
+This task focuses on the implementation of several models in order to learn to 
+classify images illustrating clothes into the correct category.  More 
+specifically, at first we experiment with an MLP and a CNN network on the 
+Fashion-Mnist dataset. Afterwards, we try improving upon the aforementioned 
+models by experimenting with other architecture (AlexNet,ResNet).
+To reproduce our experiments run:
+- task1a MLP training-evaluation:
+> python experiments/task1a.py --lr 0.0001 --es 10
+
+-task1b CNN training-evaluation:
+>python experiments/task1b.py --lr 0.0001 --es 10 --not_use_early_stopping
+
+-task1c AlexNet training-evaluation:
+>python experiments/task1calexnet.py --lr 0.00001 
+
+-task1c ResNet training-evaluation:
+>python experiments/task1cresnet.py --lr 0.0001 
+
+###Part 2:
+This task focuses on using the transfer learning technique on a 
+pneumonia detection task. More specifically, we obtain the XCeption model,
+a model pre-trained on the ImageNet dataset, and we fine-tune it on the
+CXR dataset. Finally, we evaluate the model's performance using
+5-fold cross-validation and discuss the obtained results.
+To reproduce our experiments run:
+
+- task2 Xception training-evaluation:
+> python experiments/task2.py --lr 0.001 --kfold_dir checkpoints/draft/xception/
+
+
