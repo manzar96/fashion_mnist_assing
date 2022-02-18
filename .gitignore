@@ -1,5 +1,7 @@
 #myfolders
 data/
+checkpoints/
+events/
 .idea
 # Byte-compiled / optimized / DLL files
 __pycache__/
