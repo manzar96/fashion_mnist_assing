@@ -68,13 +68,17 @@ specifically, at first we experiment with an MLP and a CNN network on the
 Fashion-Mnist dataset. Afterwards, we try improving upon the aforementioned 
 models by experimenting with other architecture (AlexNet,ResNet).
 To reproduce our experiments run:
+
 - task1a MLP training-evaluation:
+
 > python experiments/task1a.py --lr 0.0001 --es 10
 
 -task1b CNN training-evaluation:
+
 >python experiments/task1b.py --lr 0.0001 --es 10 --not_use_early_stopping
 
 -task1c AlexNet training-evaluation:
+
 >python experiments/task1calexnet.py --lr 0.00001 
 
 -task1c ResNet training-evaluation:
@@ -89,6 +93,7 @@ CXR dataset. Finally, we evaluate the model's performance using
 To reproduce our experiments run:
 
 - task2 Xception training-evaluation:
+
 > python experiments/task2.py --lr 0.001 --kfold_dir checkpoints/draft/xception/
 
 
