@@ -38,13 +38,15 @@ and install the default manually by running:
 
 <h3>Project Structure-Training-Evaluation:</h3>
 <h4>Structure:</h4>
-The **experiments** folder contains the main python scripts for each task of 
+The <b>experiments</b> folder contains the main python scripts for each 
+task of 
 the assignment.
-The **src** folder contains all the classes used in the main scripts.  
+The <b>src</b> folder contains all the classes used in the main scripts.  
 <h4>Training:</h4>
-You can run any of the python scripts contained on the **experiments** 
+You can run any of the python scripts contained on the <b>experiments</b> 
 folder or to create yours. For example, if you want to run the first task 
 of the assignment run:
+
 > export PYTHONPATH=./
 
 > python experiments/task1.py
